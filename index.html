@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D Bin Packing in JavaScript — Demo &amp; API | 3dbinpackingjs</title>
+  <meta name="description" content="Explore 3D bin packing in JavaScript. Try the interactive box-packing demo, set rotation rules, inspect layouts, and use the standalone packing API.">
+  <link rel="canonical" href="https://keremdemirer.github.io/3dbinpackingjs/">
+  <meta name="theme-color" content="#146653">
+  <link rel="icon" href="demo/assets/favicon.svg" type="image/svg+xml">
+  <link rel="sitemap" href="sitemap.xml" type="application/xml">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="3dbinpackingjs">
+  <meta property="og:title" content="3D Bin Packing in JavaScript — Interactive Demo &amp; API">
+  <meta property="og:description" content="Explore 3D bin packing in JavaScript. Try the interactive box-packing demo, set rotation rules, inspect layouts, and use the standalone packing API.">
+  <meta property="og:url" content="https://keremdemirer.github.io/3dbinpackingjs/">
+  <meta property="og:image" content="https://keremdemirer.github.io/3dbinpackingjs/demo/assets/social-preview.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="3dbinpackingjs: JavaScript 3D bin packing, with an illustration of boxes arranged in a container.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="3D Bin Packing in JavaScript — Interactive Demo &amp; API">
+  <meta name="twitter:description" content="Explore 3D bin packing in JavaScript. Try the interactive box-packing demo, set rotation rules, inspect layouts, and use the standalone packing API.">
+  <meta name="twitter:image" content="https://keremdemirer.github.io/3dbinpackingjs/demo/assets/social-preview.png">
+  <meta name="twitter:image:alt" content="3dbinpackingjs: JavaScript 3D bin packing, with an illustration of boxes arranged in a container.">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://keremdemirer.github.io/3dbinpackingjs/#page",
+      "url": "https://keremdemirer.github.io/3dbinpackingjs/",
+      "name": "3D Bin Packing in JavaScript \u2014 Demo & API",
+      "description": "Explore 3D bin packing in JavaScript. Try the interactive box-packing demo, set rotation rules, inspect layouts, and use the standalone packing API.",
+      "inLanguage": "en",
+      "mainEntity": {
+        "@id": "https://keremdemirer.github.io/3dbinpackingjs/#demo"
+      },
+      "about": {
+        "@id": "https://keremdemirer.github.io/3dbinpackingjs/#source"
+      }
+    },
+    {
+      "@type": "WebApplication",
+      "@id": "https://keremdemirer.github.io/3dbinpackingjs/#demo",
+      "name": "3dbinpackingjs interactive demo",
+      "url": "https://keremdemirer.github.io/3dbinpackingjs/",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "browserRequirements": "Requires JavaScript; WebGL for the interactive 3D view.",
+      "description": "An interactive single-container box-packing demo with rotation rules, placement inspection, and JSON and PNG exports.",
+      "isBasedOn": {
+        "@id": "https://keremdemirer.github.io/3dbinpackingjs/#source"
+      }
+    },
+    {
+      "@type": "SoftwareSourceCode",
+      "@id": "https://keremdemirer.github.io/3dbinpackingjs/#source",
+      "name": "3dbinpackingjs",
+      "codeRepository": "https://github.com/keremdemirer/3dbinpackingjs",
+      "url": "https://github.com/keremdemirer/3dbinpackingjs",
+      "programmingLanguage": "JavaScript",
+      "runtimePlatform": [
+        "Node.js",
+        "Web browser"
+      ],
+      "description": "A JavaScript port of a single-container EB-AFIT 3D bin-packing heuristic, with CommonJS, ES module, and browser APIs."
+    }
+  ]
+}
+  </script>
+  <link rel="stylesheet" href="demo/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./"><span class="brand-mark" aria-hidden="true">▧</span><span>3D Bin Packing<small>THE INTERACTIVE WORKBENCH</small></span></a>
+    <a class="repo-link" href="https://github.com/keremdemirer/3dbinpackingjs">View source <span aria-hidden="true">↗</span></a>
+  </header>
+  <main>
+    <div class="intro"><div><p class="eyebrow">A LITTLE LESS EMPTY SPACE</p><h1>3D bin packing in JavaScript</h1><p>Build a load, explore the arrangement, and inspect every box with 3dbinpackingjs.</p></div><span class="local-badge">● Runs locally in your browser</span></div>
+    <nav class="page-nav" aria-label="Page sections"><a href="#packing-form">Try the demo</a><a href="#how-it-works">How it works</a><a href="#javascript-api">JavaScript API</a><a href="#questions">Questions</a></nav>
+    <noscript><p class="panel no-script">The packing calculator needs JavaScript. You can still read the algorithm overview, API example, and limitations below.</p></noscript>
+    <div class="workspace">
+      <aside class="panel inputs-panel">
+        <form id="packing-form">
+          <div class="section-heading"><h2>Your load</h2><span class="step">01 / INPUT</span></div>
+          <label class="field-label" for="example">Start with an example</label>
+          <select id="example"><option value="mixed">Mixed cartons</option><option value="knownfill">Known full-container fit</option><option value="exact">An exact fit</option><option value="partial">More boxes than space</option><option value="orientation">Keep it upright</option><option value="regression">Three-box regression</option></select>
+          <section aria-labelledby="container-heading"><h3 id="container-heading">Container</h3><p class="helper">Use the same unit for every dimension.</p>
+            <div class="dimensions"><label>Width <span>X</span><input id="strxx" type="number" min="0.000001" step="any" required value="12"></label><label>Height <span>Y</span><input id="stryy" type="number" min="0.000001" step="any" required value="10"></label><label>Depth <span>Z</span><input id="strzz" type="number" min="0.000001" step="any" required value="8"></label></div>
+          </section>
+          <label class="field-label" for="search">Search effort</label>
+          <select id="search"><option value="standard">Standard search</option><option value="extended">Extended search · extra pass</option></select>
+          <p class="helper">Try another arrangement if needed. Extended search can take longer.</p>
+          <section aria-labelledby="items-heading"><div class="section-heading"><h3 id="items-heading">Box types</h3><button id="add-box" class="text-button" type="button">+ Add type</button></div>
+            <div class="item-labels" aria-hidden="true"><span>ID</span><span>W</span><span>H</span><span>D</span><span>Qty</span><span></span></div>
+            <div id="box-input-screen"></div>
+          </section>
+          <label class="settle-option"><input id="settle" type="checkbox" checked> Settle boxes downward</label>
+          <p class="helper settle-help">Closes gaps below boxes. Overhangs may remain.</p>
+          <div class="calculation-actions"><button id="calculate" class="primary-button" type="submit">Calculate packing <span aria-hidden="true">→</span></button><button id="cancel" type="button" hidden>Cancel</button></div>
+          <p id="calculation-notice" class="helper" role="status" hidden>Background calculation is unavailable. Calculations run on this page; cancellation is unavailable while they run.</p>
+          <p class="helper algorithm-note">Set rotation per box type. This heuristic finds a useful arrangement; it does not guarantee an optimal or physically supported load.</p>
+        </form>
+      </aside>
+      <div class="results-column">
+        <section class="metrics" aria-label="Packing summary"><div class="metric"><span>Packed boxes</span><strong id="packed-count">—</strong></div><div class="metric"><span>Volume used</span><strong id="utilization">—</strong></div><div class="metric"><span>Unpacked boxes</span><strong id="unpacked-count">—</strong></div></section>
+        <section class="panel viewer-panel" aria-labelledby="viewer-heading">
+          <div class="viewer-heading"><div><h2 id="viewer-heading">The arrangement</h2><p id="view-state">Calculate to see your load</p></div><div class="view-buttons"><button id="zoom-out" type="button" aria-label="Zoom out">−</button><button id="zoom-in" type="button" aria-label="Zoom in">+</button><button id="reset-view" type="button">Reset view</button></div></div>
+          <div class="canvas-wrap"><canvas id="packing-view" tabindex="0" aria-label="Interactive 3D packing view" aria-describedby="view-help">Use the packed-box selector below to inspect the arrangement.</canvas><div class="axis-key" aria-hidden="true"><span class="axis-x">X width</span><span class="axis-y">Y height</span><span class="axis-z">Z depth</span></div></div>
+          <p id="viewer-warning" class="viewer-warning" role="status" hidden></p>
+          <div class="viewer-footer"><p id="view-help">Drag to rotate · Shift-drag to pan · Scroll to zoom<br><span>Touch: drag to rotate, two fingers to pan / pinch. Keyboard: arrows, Shift + arrows, + / −, 0 to reset.</span></p><div class="export-buttons"><button id="export-png" type="button" disabled>Save PNG</button><button id="export-json" type="button" disabled>Export JSON</button></div></div>
+        </section>
+        <p id="support-warning" class="support-warning" role="status" hidden></p>
+        <p id="status" class="status" role="status" aria-live="polite">Preparing example…</p>
+        <div class="details-grid">
+          <section class="panel inspection" aria-labelledby="inspect-heading"><div class="section-heading"><h2 id="inspect-heading">Inspect a box</h2><span class="step">02 / EXPLORE</span></div><label class="field-label" for="placement-select">Click a box or choose an instance</label><select id="placement-select" disabled><option value="">Select a packed box</option></select><div id="placement-pages" class="placement-pages" hidden><p id="placement-range" aria-live="polite"></p><div class="placement-navigation"><button id="placement-previous" type="button">Previous</button><label>Page <input id="placement-page" type="number" min="1" step="1" value="1" aria-label="Packed box page"></label><button id="placement-next" type="button">Next</button></div></div><div id="inspection-details" class="inspection-details" aria-live="polite">Select a box to see its position and rotated dimensions.</div></section>
+          <section class="panel breakdown" aria-labelledby="breakdown-heading"><h2 id="breakdown-heading">Load breakdown</h2><div id="legend" class="legend"></div><h3>Unpacked items</h3><div id="unpacked-list" class="unpacked-list">Calculate to see remaining items.</div></section>
+        </div>
+        <details class="panel text-report"><summary>View text report</summary><textarea id="screen" readonly aria-label="Packing text report"></textarea></details>
+      </div>
+    </div>
+    <section class="project-guide panel" aria-labelledby="how-it-works">
+      <p class="eyebrow">ABOUT 3DBINPACKINGJS</p>
+      <h2 id="how-it-works">How does 3D bin packing work?</h2>
+      <p>3D bin packing arranges rectangular boxes inside a container while trying to use its available volume. 3dbinpackingjs provides a single-container JavaScript packing heuristic and this interactive demo.</p>
+      <p>Enter the container dimensions, add box sizes and quantities, and choose a rotation rule for each box type. Calculate the arrangement, rotate the 3D view, and select a box to inspect its position and dimensions. Export the result as JSON or save the view as a PNG image. Calculations run locally in your browser.</p>
+      <p>The solver uses an EB-AFIT layer-based heuristic, ported from <a href="https://github.com/wknechtel/3d-bin-pack/">wknechtel/3d-bin-pack</a>. It explores container-axis variants and candidate layers to find a high-volume arrangement. It does not guarantee the optimal packing.</p>
+      <h2 id="javascript-api">Use the JavaScript bin-packing API</h2>
+      <p>The standalone API works in Node.js through CommonJS or ES modules, and in a browser without a bundler. TypeScript declarations are included. From a repository checkout:</p>
+      <pre><code>const { pack } = require('./pack.js');
+
+const result = pack({
+  container: { width: 4, height: 3, depth: 2 },
+  items: [{
+    id: 'carton', width: 2, height: 3, depth: 4,
+    quantity: 1, rotation: 'upright'
+  }]
+});
+
+console.log(result.placements);
+console.log(result.utilization); // 1 (100%)</code></pre>
+      <p>See the <a href="https://github.com/keremdemirer/3dbinpackingjs#javascript-api">API documentation and input format</a>, <a href="https://github.com/keremdemirer/3dbinpackingjs/tree/master/bench">performance and packing-quality benchmarks</a>, or <a href="https://github.com/keremdemirer/3dbinpackingjs/issues">report a reproducible problem</a>.</p>
+      <h2 id="questions">Common questions</h2>
+      <h3>Which box rotations are supported?</h3>
+      <p>Free rotation permits all width, height, and depth permutations. Upright keeps the original height on the Y axis and permits width/depth swaps. Fixed preserves all three original axes.</p>
+      <h3>Which measurement units should I use?</h3>
+      <p>Use one consistent unit for every container and box dimension. For example, enter every dimension in millimeters. Quantities must be positive whole numbers.</p>
+      <h3>Does a geometric fit guarantee a stable load?</h3>
+      <p>No. The solver checks geometric fit, not weight, balance, box strength, or physical stability. Optional downward settling closes vertical gaps without changing packed volume. Base-contact diagnostics identify absent or partial contact, but even full base contact is not a stability certificate. Treat the visualization as a geometric arrangement, not a validated loading plan.</p>
+      <h3>Can I install this package from npm?</h3>
+      <p>The repository currently provides code for use from a checkout; it is not an npm release. Upstream licensing remains unresolved. Read the <a href="https://github.com/keremdemirer/3dbinpackingjs/blob/master/LICENSE-STATUS.md">license status and provenance</a> before adopting or redistributing the code.</p>
+    </section>
+  </main>
+  <footer class="site-footer">3dbinpackingjs <span>Single container. Six rotations. A better view of the space.</span></footer>
+  <script src="pack.js"></script>
+  <script src="pack1.js"></script>
+  <script src="demo/viewer.js"></script>
+  <script src="demo/support.js"></script>
+  <script src="demo/runner.js"></script>
+  <script src="demo/app.js"></script>
+</body>
+</html>

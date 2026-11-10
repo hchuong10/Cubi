@@ -1,0 +1,72 @@
+{
+  "name": "3dbinpackingjs",
+  "version": "0.1.0",
+  "description": "JavaScript 3D bin packing with an EB-AFIT heuristic, rotation rules, a Node.js/browser API, and an interactive demo.",
+  "type": "commonjs",
+  "private": true,
+  "license": "UNLICENSED",
+  "main": "./pack.js",
+  "types": "./pack.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./pack.d.mts",
+        "default": "./pack.mjs"
+      },
+      "require": {
+        "types": "./pack.d.ts",
+        "default": "./pack.js"
+      },
+      "default": "./pack.js"
+    }
+  },
+  "files": [
+    "pack.js",
+    "pack.mjs",
+    "pack.d.ts",
+    "pack.d.mts",
+    "pack1.js",
+    "index.html",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE-STATUS.md",
+    "demo/",
+    "sitemap.xml",
+    "docs/"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "test:types": "tsc -p type-tests/tsconfig.json",
+    "check": "npm test && npm run test:types",
+    "bench": "node bench/run.js",
+    "bench:quick": "node bench/run.js --quick --samples 1 --warmup 0",
+    "bench:check": "node bench/run.js --samples 1 --warmup 0 --baseline bench/baseline.json --check-quality",
+    "bench:settling": "node bench/settling.js",
+    "bench:compare": "node bench/compare-performance.js",
+    "bench:quality": "node bench/quality.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/keremdemirer/3dbinpackingjs.git"
+  },
+  "homepage": "https://keremdemirer.github.io/3dbinpackingjs/",
+  "bugs": {
+    "url": "https://github.com/keremdemirer/3dbinpackingjs/issues"
+  },
+  "keywords": [
+    "3d-bin-packing",
+    "bin-packing",
+    "box-packing",
+    "packing-algorithm",
+    "eb-afit",
+    "javascript",
+    "nodejs",
+    "3d-visualization"
+  ],
+  "devDependencies": {
+    "typescript": "5.9.3"
+  }
+}
